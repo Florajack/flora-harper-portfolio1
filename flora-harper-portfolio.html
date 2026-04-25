@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flora Harper — Creative Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sky:#B8DEFF;--sky-light:#EEF6FF;--sky-mid:#7DC4F5;--sky-deep:#2B8FE0;--sky-dark:#1A6DB5;
+  --white:#F9FCFF;--ink:#0B1826;--ink-soft:#253545;--muted:#5E7D95;--border:rgba(100,170,220,0.18);
+  --card:#FFFFFF;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--sky-deep);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--sky-deep);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.12s ease;opacity:0.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 5rem;background:rgba(249,252,255,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:all 0.3s}
+nav.scrolled{padding:1rem 5rem;box-shadow:0 4px 30px rgba(43,143,224,0.07)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;letter-spacing:0.06em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+.nav-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--sky-deep);display:inline-block;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}}
+.nav-logo span{font-style:italic;color:var(--sky-deep)}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
+.nav-links a{font-size:0.78rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--sky-deep);transition:width 0.3s}
+.nav-links a:hover{color:var(--sky-deep)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--sky-deep);color:white!important;padding:0.55rem 1.4rem;border-radius:100px;font-size:0.78rem!important;letter-spacing:0.1em!important;transition:background 0.3s!important}
+.nav-cta:hover{background:var(--ink)!important}
+.nav-cta::after{display:none!important}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:7rem 5rem 5rem}
+.hero-canvas{position:absolute;inset:0;z-index:0}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:500px;height:500px;background:rgba(184,222,255,0.4);top:-10%;right:-5%;animation:orbFloat 10s ease-in-out infinite}
+.orb2{width:300px;height:300px;background:rgba(125,196,245,0.25);bottom:5%;left:-5%;animation:orbFloat 14s ease-in-out infinite reverse}
+.orb3{width:180px;height:180px;background:rgba(43,143,224,0.15);top:40%;left:30%;animation:orbFloat 8s ease-in-out infinite 2s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.08)}}
+.hero-content{position:relative;z-index:2;max-width:780px}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sky-deep);border:1px solid rgba(43,143,224,0.25);padding:0.45rem 1.2rem;border-radius:100px;margin-bottom:2.2rem;opacity:0;animation:fadeUp 0.9s 0.3s forwards;background:rgba(43,143,224,0.05)}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--sky-deep);animation:pulse 1.5s infinite}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.8rem,7.5vw,7.5rem);font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:var(--ink);opacity:0;animation:fadeUp 0.9s 0.5s forwards}
+.hero-title em{font-style:italic;color:var(--sky-deep);display:block}
+.hero-title strong{font-weight:300;position:relative;display:inline-block}
+.hero-title strong::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky-mid),var(--sky-deep));transform:scaleX(0);animation:lineGrow 0.8s 1.4s forwards}
+@keyframes lineGrow{to{transform:scaleX(1)}}
+.hero-sub{font-size:1.0rem;font-weight:300;color:var(--muted);margin-top:1.8rem;line-height:1.9;max-width:500px;opacity:0;animation:fadeUp 0.9s 0.7s forwards}
+.hero-actions{display:flex;gap:1rem;margin-top:3rem;flex-wrap:wrap;opacity:0;animation:fadeUp 0.9s 0.9s forwards}
+.btn-p{background:var(--sky-deep);color:white;padding:0.9rem 2.6rem;border-radius:100px;font-size:0.85rem;font-weight:500;letter-spacing:0.05em;text-decoration:none;transition:all 0.3s;border:none;cursor:none}
+.btn-p:hover{background:var(--ink);transform:translateY(-3px);box-shadow:0 12px 35px rgba(43,143,224,0.3)}
+.btn-o{border:1px solid rgba(43,143,224,0.35);color:var(--ink-soft);padding:0.9rem 2.6rem;border-radius:100px;font-size:0.85rem;font-weight:400;letter-spacing:0.05em;text-decoration:none;transition:all 0.3s;cursor:none}
+.btn-o:hover{border-color:var(--sky-deep);color:var(--sky-deep);transform:translateY(-3px)}
+.hero-stats{position:absolute;right:5rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2.5rem;opacity:0;animation:fadeIn 1s 1.2s forwards;z-index:2}
+.h-stat{text-align:right}
+.h-stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--sky-deep);line-height:1;display:block}
+.h-stat-label{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem;display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--sky-deep);padding:0.9rem 0;overflow:hidden;position:relative}
+.marquee-track{display:flex;gap:0;animation:marquee 22s linear infinite;white-space:nowrap;width:max-content}
+.mi{font-size:0.7rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.8);padding:0 2.5rem;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.15)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION BASE */
+section{padding:7rem 5rem}
+.s-label{font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sky-deep);display:block;margin-bottom:1rem}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;line-height:1.18;color:var(--ink)}
+.s-title em{font-style:italic;color:var(--sky-deep)}
+
+/* ABOUT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(11,24,38,0.7);z-index:800;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:2rem}
+.modal-overlay.open{display:flex}
+.modal-box{background:white;border-radius:20px;max-width:700px;width:100%;padding:3.5rem;position:relative;animation:modalIn 0.4s ease;max-height:85vh;overflow-y:auto}
+@keyframes modalIn{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:1.5rem;right:1.5rem;background:var(--sky-light);border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.2s}
+.modal-close:hover{background:var(--sky-deep);color:white}
+.modal-tag{display:inline-block;background:var(--sky-light);color:var(--sky-deep);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1.5rem}
+.modal-name{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1.1;margin-bottom:1.5rem}
+.modal-name em{font-style:italic;color:var(--sky-deep)}
+.modal-body p{font-size:0.92rem;color:var(--muted);line-height:1.9;margin-bottom:1rem}
+.modal-body strong{color:var(--ink);font-weight:500}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.modal-stat{background:var(--sky-light);border-radius:12px;padding:1.2rem;text-align:center}
+.modal-stat span{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--sky-deep);display:block;font-weight:300}
+.modal-stat p{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin:0.2rem 0 0}
+
+/* SERVICES */
+#services{background:var(--sky-light)}
+.services-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;flex-wrap:wrap;gap:2rem}
+.services-note{font-size:0.88rem;color:var(--muted);max-width:320px;line-height:1.7}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.svc-card{background:white;border:1px solid var(--border);border-radius:18px;padding:2.2rem;transition:all 0.4s;position:relative;overflow:hidden;cursor:none}
+.svc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(43,143,224,0.04),transparent);opacity:0;transition:opacity 0.4s}
+.svc-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(43,143,224,0.13);border-color:rgba(43,143,224,0.25)}
+.svc-card:hover::after{opacity:1}
+.svc-icon{width:48px;height:48px;border-radius:12px;background:var(--sky-light);display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;font-size:1.4rem;transition:all 0.3s}
+.svc-card:hover .svc-icon{background:var(--sky-deep);transform:scale(1.1)}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:var(--sky-mid);letter-spacing:0.1em;margin-bottom:0.6rem;display:block}
+.svc-name{font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:0.6rem}
+.svc-desc{font-size:0.82rem;color:var(--muted);line-height:1.75}
+.svc-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.2rem}
+.tag{font-size:0.68rem;letter-spacing:0.08em;background:var(--sky-light);color:var(--sky-deep);padding:0.25rem 0.7rem;border-radius:100px}
+
+/* ABOUT DARK STRIP */
+.about-dark{background:var(--ink);color:white;padding:6rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.about-dark .s-label{color:var(--sky-mid)}
+.about-dark .s-title{color:white}
+.about-dark .s-title em{color:var(--sky-mid)}
+.about-dark p{font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.9;margin-top:1.5rem}
+.about-dark .btn-p{margin-top:2rem;display:inline-block}
+.about-right{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.a-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.8rem;transition:all 0.3s}
+.a-stat:hover{background:rgba(43,143,224,0.1);border-color:rgba(43,143,224,0.25)}
+.a-stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--sky-mid);line-height:1;display:block}
+.a-stat-label{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:0.4rem;display:block}
+
+/* PACKAGES */
+#packages{background:white}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.pkg-card{border:1px solid var(--border);border-radius:20px;padding:2.2rem;position:relative;transition:all 0.4s;background:white;cursor:none}
+.pkg-card.featured{border:2px solid var(--sky-deep);background:linear-gradient(135deg,var(--sky-light),white)}
+.pkg-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--sky-deep);color:white;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.3rem 1rem;border-radius:100px;white-space:nowrap}
+.pkg-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(43,143,224,0.1)}
+.pkg-tier{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sky-deep);margin-bottom:0.6rem;display:block}
+.pkg-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--ink);margin-bottom:0.5rem}
+.pkg-tagline{font-size:0.8rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6}
+.pkg-items{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2rem}
+.pkg-items li{font-size:0.82rem;color:var(--ink-soft);display:flex;align-items:center;gap:0.6rem}
+.pkg-items li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sky-mid);flex-shrink:0}
+.pkg-cta{display:block;text-align:center;background:var(--sky-light);color:var(--sky-deep);padding:0.8rem;border-radius:100px;font-size:0.82rem;font-weight:500;text-decoration:none;transition:all 0.3s;border:none;width:100%;cursor:none}
+.pkg-card.featured .pkg-cta{background:var(--sky-deep);color:white}
+.pkg-cta:hover{background:var(--sky-deep);color:white}
+
+/* PROCESS */
+#process{background:var(--sky-light)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:4rem;position:relative}
+.process-steps::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--sky-mid),transparent)}
+.p-step{text-align:center;position:relative}
+.p-dot{width:64px;height:64px;border-radius:50%;border:1px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--sky-deep);position:relative;z-index:1;transition:all 0.3s}
+.p-step:hover .p-dot{background:var(--sky-deep);color:white;border-color:var(--sky-deep);transform:scale(1.1)}
+.p-title{font-size:0.92rem;font-weight:500;color:var(--ink);margin-bottom:0.5rem}
+.p-desc{font-size:0.8rem;color:var(--muted);line-height:1.7}
+
+/* PORTFOLIO */
+#portfolio{background:white}
+.portfolio-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:2rem}
+.portfolio-tabs{display:flex;gap:0.5rem;flex-wrap:wrap}
+.ptab{font-size:0.75rem;letter-spacing:0.1em;padding:0.5rem 1.2rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);background:none;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif}
+.ptab.active,.ptab:hover{background:var(--sky-deep);color:white;border-color:var(--sky-deep)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.p-item{border-radius:16px;overflow:hidden;background:var(--sky-light);border:1px solid var(--border);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative;transition:all 0.3s;cursor:none}
+.p-item:hover{transform:scale(1.02);box-shadow:0 16px 40px rgba(43,143,224,0.12)}
+.p-placeholder{text-align:center;padding:2rem}
+.p-placeholder-icon{font-size:2rem;margin-bottom:0.8rem;opacity:0.4}
+.p-placeholder-text{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em}
+.p-item-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(11,24,38,0.7));padding:1.5rem 1.2rem 1.2rem;opacity:0;transition:opacity 0.3s}
+.p-item:hover .p-item-label{opacity:1}
+.p-item-name{font-size:0.82rem;font-weight:500;color:white}
+.p-item-cat{font-size:0.7rem;color:rgba(255,255,255,0.6);margin-top:0.2rem}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--ink);padding:6rem 5rem}
+#testimonials .s-label{color:var(--sky-mid)}
+#testimonials .s-title{color:white}
+#testimonials .s-title em{color:var(--sky-mid)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.testi-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:2rem;transition:all 0.3s}
+.testi-card:hover{background:rgba(43,143,224,0.08);border-color:rgba(43,143,224,0.2);transform:translateY(-4px)}
+.testi-verified{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sky-mid);margin-bottom:0.8rem;opacity:0.7}
+.testi-quote{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:1.5rem}
+.testi-author{display:flex;align-items:center;gap:0.8rem}
+.testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--sky-deep);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:500;color:white;flex-shrink:0}
+.testi-name{font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85)}
+.testi-handle{font-size:0.72rem;color:var(--sky-mid)}
+.pkg-price{font-size:0.88rem;color:var(--muted);margin-bottom:0.5rem}
+.pkg-price strong{font-size:1.4rem;color:var(--sky-deep);font-family:'Cormorant Garamond',serif;font-weight:300}
+#blog{background:var(--sky-light)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.blog-card{background:white;border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.4s;cursor:none}
+.blog-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(43,143,224,0.1)}
+.blog-thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--sky-light)}
+.blog-body{padding:1.5rem}
+.blog-cat{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sky-deep);margin-bottom:0.6rem;display:block}
+.blog-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;line-height:1.35;color:var(--ink);margin-bottom:0.8rem}
+.blog-preview{font-size:0.8rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem}
+.blog-meta{font-size:0.72rem;color:var(--muted);letter-spacing:0.06em}
+
+/* FAQ */
+#faq{background:white}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3.5rem}
+.faq-item{border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.4rem 1.6rem;font-size:0.9rem;font-weight:500;color:var(--ink);transition:all 0.3s;gap:1rem}
+.faq-item.open .faq-q{color:var(--sky-deep);background:var(--sky-light)}
+.faq-arrow{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;transition:all 0.3s;color:var(--muted)}
+.faq-item.open .faq-arrow{background:var(--sky-deep);color:white;border-color:var(--sky-deep);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s}
+.faq-item.open .faq-a{max-height:200px;padding:0 1.6rem 1.4rem}
+.faq-a p{font-size:0.85rem;color:var(--muted);line-height:1.8}
+
+/* CONTACT */
+#contact{background:linear-gradient(160deg,var(--sky-light) 0%,white 60%);position:relative;overflow:hidden;text-align:center}
+#contact::before{content:'FH';position:absolute;font-family:'Cormorant Garamond',serif;font-size:30rem;font-weight:300;color:rgba(184,222,255,0.18);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;user-select:none}
+.contact-inner{position:relative;z-index:2;max-width:650px;margin:0 auto}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5.5rem);font-weight:300;color:var(--ink);line-height:1.1}
+.contact-title em{font-style:italic;color:var(--sky-deep)}
+.contact-sub{font-size:0.95rem;color:var(--muted);margin-top:1.2rem;line-height:1.7}
+.contact-form{margin-top:3rem;display:flex;flex-direction:column;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-input{width:100%;padding:0.9rem 1.4rem;border:1px solid var(--border);border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--ink);background:white;outline:none;transition:border-color 0.3s;cursor:none}
+.form-input:focus{border-color:var(--sky-deep)}
+.form-textarea{border-radius:16px;resize:none;height:120px;cursor:none}
+.contact-socials{display:flex;justify-content:center;gap:1rem;margin-top:2.5rem}
+.social-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.4rem;border:1px solid var(--border);border-radius:100px;font-size:0.78rem;color:var(--muted);text-decoration:none;transition:all 0.3s;cursor:none}
+.social-btn:hover{border-color:var(--sky-deep);color:var(--sky-deep);background:var(--sky-light)}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,0.35);padding:2.5rem 5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.6);letter-spacing:0.06em}
+.footer-logo em{font-style:italic;color:var(--sky-mid)}
+.footer-company{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:0.2rem}
+.footer-links{display:flex;gap:2rem}
+.footer-links a{font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:0.08em;transition:color 0.3s}
+.footer-links a:hover{color:var(--sky-mid)}
+.footer-copy{font-size:0.72rem}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* CONTACT FORM SUBMIT */
+.form-success{display:none;background:var(--sky-light);border:1px solid rgba(43,143,224,0.25);border-radius:16px;padding:1.5rem;margin-top:1rem;font-size:0.88rem;color:var(--sky-dark);text-align:center}
+
+@media(max-width:900px){
+  nav{padding:1.2rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:4.5rem 1.5rem}
+  .hero{padding:6rem 1.5rem 4rem}
+  .hero-stats{display:none}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .about-dark{grid-template-columns:1fr;padding:4rem 1.5rem;gap:3rem}
+  .pkg-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr 1fr;gap:2rem}
+  .process-steps::before{display:none}
+  .portfolio-grid{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:2rem 1.5rem;flex-direction:column;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center}
+  #contact::before{font-size:12rem}
+  .about-right{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tag">Founded by Flora Harper</div>
+    <h2 class="modal-name">We turn ideas into <em>visual reality</em></h2>
+    <div class="modal-body">
+      <p><strong>Flora Harper</strong> is the Founder, CEO, and Team Leader of SHAHZAIBAWANLTD — the UK-registered company behind the Flora Harper Creative Agency. With over <strong>7 years of hands-on experience</strong> in the global design industry, Flora built this agency from the ground up with one mission: deliver world-class creative work at every scale.</p>
+      <p>What started as solo client work evolved into a <strong>team of 15–20 expert specialists</strong> — 2D artists, 3D modelers, riggers, video editors, comic writers, web designers, marketers, and ecommerce strategists — all working under one roof to serve clients across Europe, North America, and beyond.</p>
+      <p>We don't just deliver files. We build brands, tell stories, and create experiences that stick. Whether you're a streamer, a startup, or an established business — Flora Harper has the team to make it happen.</p>
+    </div>
+    <div class="modal-grid">
+      <div class="modal-stat"><span>7+</span><p>Years experience</p></div>
+      <div class="modal-stat"><span>15–20</span><p>Expert team members</p></div>
+      <div class="modal-stat"><span>UK</span><p>Registered Ltd company</p></div>
+      <div class="modal-stat"><span>48h</span><p>Average turnaround</p></div>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo" onclick="openModal(event)">
+    <span class="nav-logo-dot"></span>
+    Flora <span>Harper</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-canvas">
+    <div class="orb1 hero-orb"></div>
+    <div class="orb2 hero-orb"></div>
+    <div class="orb3 hero-orb"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>UK Registered · SHAHZAIBAWANLTD</div>
+    <div class="hero-badge" style="margin-left:0.5rem;background:rgba(43,143,224,0.08);border-color:rgba(43,143,224,0.3)"><span class="badge-dot" style="background:#22c55e"></span>Currently accepting new clients · Starting from $99</div>
+    <h1 class="hero-title">
+      Creative work<br>
+      <em>that moves</em><br>
+      <strong>people</strong>
+    </h1>
+    <p class="hero-sub">2D & 3D art, brand building, web design, digital marketing — delivered by a 15–20 member expert team, worldwide.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-p">Start a project</a>
+      <a href="#services" class="btn-o">Explore services</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="h-stat"><span class="h-stat-num">7+</span><span class="h-stat-label">Years active</span></div>
+    <div class="h-stat"><span class="h-stat-num">20</span><span class="h-stat-label">Team experts</span></div>
+    <div class="h-stat"><span class="h-stat-num">UK</span><span class="h-stat-label">Ltd registered</span></div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track" aria-hidden="true">
+    <span class="mi">2D Art</span><span class="mi">3D Modeling</span><span class="mi">Character Rigging</span>
+    <span class="mi">Brand Identity</span><span class="mi">Logo Design</span><span class="mi">Web Design</span>
+    <span class="mi">Video Editing</span><span class="mi">Social Media</span><span class="mi">Ecommerce</span>
+    <span class="mi">Comic Writing</span><span class="mi">Novel Writing</span><span class="mi">Game Characters</span>
+    <span class="mi">3D Architecture</span><span class="mi">Digital Marketing</span><span class="mi">Content Strategy</span>
+    <span class="mi">2D Art</span><span class="mi">3D Modeling</span><span class="mi">Character Rigging</span>
+    <span class="mi">Brand Identity</span><span class="mi">Logo Design</span><span class="mi">Web Design</span>
+    <span class="mi">Video Editing</span><span class="mi">Social Media</span><span class="mi">Ecommerce</span>
+    <span class="mi">Comic Writing</span><span class="mi">Novel Writing</span><span class="mi">Game Characters</span>
+    <span class="mi">3D Architecture</span><span class="mi">Digital Marketing</span><span class="mi">Content Strategy</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro">
+    <div>
+      <span class="s-label reveal">What we do</span>
+      <h2 class="s-title reveal">Every creative need.<br><em>One agency.</em></h2>
+    </div>
+    <p class="services-note reveal">From a single logo to a full brand ecosystem — our 15–20 member team handles every layer of your creative vision.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal">
+      <div class="svc-icon">🎨</div>
+      <span class="svc-num">01</span>
+      <div class="svc-name">2D Art & Animation</div>
+      <p class="svc-desc">Character design, emotes, sub badges, animated overlays, stream graphics, and full illustrated branding for creators and studios.</p>
+      <div class="svc-tags"><span class="tag">Emotes</span><span class="tag">Overlays</span><span class="tag">Sub Badges</span><span class="tag">Animation</span></div>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon">🧊</div>
+      <span class="svc-num">02</span>
+      <div class="svc-name">3D Modeling & Rigging</div>
+      <p class="svc-desc">Full 3D character creation, VTuber model rigging, game-ready assets, architectural visualization, room & house 3D structures, and realistic renders.</p>
+      <div class="svc-tags"><span class="tag">VTuber</span><span class="tag">Game Assets</span><span class="tag">Architecture</span><span class="tag">Rigging</span></div>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon">✏️</div>
+      <span class="svc-num">03</span>
+      <div class="svc-name">Comics, Manga & Writing</div>
+      <p class="svc-desc">Script writing, comic page layout, manga-style art, novel writing, character sheets, and full story-to-print production for independent creators.</p>
+      <div class="svc-tags"><span class="tag">Comics</span><span class="tag">Manga</span><span class="tag">Novel</span><span class="tag">Storyboard</span></div>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon">🏷️</div>
+      <span class="svc-num">04</span>
+      <div class="svc-name">Brand Building</div>
+      <p class="svc-desc">Logo design, full visual identity, brand guidelines, color systems, typography kits — everything to make your brand unmistakable across every platform.</p>
+      <div class="svc-tags"><span class="tag">Logo</span><span class="tag">Identity</span><span class="tag">Guidelines</span><span class="tag">Strategy</span></div>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon">🌐</div>
+      <span class="svc-num">05</span>
+      <div class="svc-name">Web Design & Maintenance</div>
+      <p class="svc-desc">Clean, fast, professional websites built to represent your brand. We design, develop, and maintain — so you never have to worry about it.</p>
+      <div class="svc-tags"><span class="tag">Design</span><span class="tag">Development</span><span class="tag">Maintenance</span></div>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon">📱</div>
+      <span class="svc-num">06</span>
+      <div class="svc-name">Social Media & Marketing</div>
+      <p class="svc-desc">Full social media management, content creation, growth strategy, digital advertising, and ecommerce store setup and handling from A to Z.</p>
+      <div class="svc-tags"><span class="tag">Social Media</span><span class="tag">Ads</span><span class="tag">Ecommerce</span><span class="tag">Growth</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT DARK -->
+<div class="about-dark" id="studio">
+  <div class="reveal">
+    <span class="s-label">The studio</span>
+    <h2 class="s-title">Built by <em>creators,</em><br>for creators.</h2>
+    <p>Flora Harper is the Founder & CEO of SHAHZAIBAWANLTD — a UK-registered creative agency with 7+ years in the global design industry. What started solo grew into a powerhouse team of 15–20 expert specialists, serving clients across Europe, North America, and Asia.</p>
+    <p style="margin-top:0.8rem">Click <strong style="color:var(--sky-mid)">Flora Harper</strong> in the top-left anytime to learn more about the team.</p>
+    <a href="#contact" class="btn-p">Work with us</a>
+  </div>
+  <div class="about-right reveal">
+    <div class="a-stat"><span class="a-stat-num">7+</span><span class="a-stat-label">Years of experience</span></div>
+    <div class="a-stat"><span class="a-stat-num">15–20</span><span class="a-stat-label">Expert team members</span></div>
+    <div class="a-stat"><span class="a-stat-num">UK</span><span class="a-stat-label">Ltd registered</span></div>
+    <div class="a-stat"><span class="a-stat-num">48h</span><span class="a-stat-label">Avg turnaround</span></div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <span class="s-label reveal">Pricing plans</span>
+  <h2 class="s-title reveal">Packages built for<br><em>every scale</em></h2>
+  <div class="pkg-grid">
+    <div class="pkg-card reveal">
+      <span class="pkg-tier">Starter</span>
+      <div class="pkg-name">Essentials</div>
+      <div class="pkg-price">From <strong>$99</strong></div>
+      <p class="pkg-tagline">Perfect for solo creators and small brands just getting started.</p>
+      <ul class="pkg-items">
+        <li>Logo design (1x)</li>
+        <li>Social media banner (2x)</li>
+        <li>Brand color palette</li>
+        <li>2D static graphic (2x)</li>
+        <li>48h turnaround</li>
+        <li>2 revision rounds</li>
+      </ul>
+      <button class="pkg-cta" onclick="scrollToContact()">Get a Quote</button>
+    </div>
+    <div class="pkg-card featured reveal">
+      <div class="pkg-badge">Most popular</div>
+      <span class="pkg-tier">Growth</span>
+      <div class="pkg-name">Creator Pro</div>
+      <p class="pkg-tagline">For streamers, creators, and growing brands who need the full package.</p>
+      <ul class="pkg-items">
+        <li>Full stream overlay kit</li>
+        <li>Animated alerts (3x)</li>
+        <li>Emotes (5x) + sub badges (5x)</li>
+        <li>Logo + animated logo</li>
+        <li>Social media kit</li>
+        <li>Brand guidelines doc</li>
+        <li>Unlimited revisions</li>
+      </ul>
+      <button class="pkg-cta" onclick="scrollToContact()">Get a Quote</button>
+    </div>
+    <div class="pkg-card reveal">
+      <span class="pkg-tier">Enterprise</span>
+      <div class="pkg-name">Full Studio</div>
+      <p class="pkg-tagline">Complete outsourced creative department for businesses and studios.</p>
+      <ul class="pkg-items">
+        <li>Everything in Creator Pro</li>
+        <li>3D character / model creation</li>
+        <li>Website design + maintenance</li>
+        <li>Social media management</li>
+        <li>Ecommerce store setup</li>
+        <li>Monthly content calendar</li>
+        <li>Dedicated account manager</li>
+      </ul>
+      <button class="pkg-cta" onclick="scrollToContact()">Get a Quote</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <span class="s-label reveal">How to reach us</span>
+  <h2 class="s-title reveal">Simple steps.<br><em>Serious results.</em></h2>
+  <div class="process-steps">
+    <div class="p-step reveal">
+      <div class="p-dot">01</div>
+      <div class="p-title">Reach Out</div>
+      <p class="p-desc">Fill our contact form below, email us, or DM us on Instagram or Twitter/X. We respond within 24 hours.</p>
+    </div>
+    <div class="p-step reveal">
+      <div class="p-dot">02</div>
+      <div class="p-title">Brief & Scope</div>
+      <p class="p-desc">Tell us your vision, timeline, and budget. We ask the right questions to understand exactly what you need.</p>
+    </div>
+    <div class="p-step reveal">
+      <div class="p-dot">03</div>
+      <div class="p-title">We Deliver</div>
+      <p class="p-desc">Our specialist team gets to work. You receive progress updates and drafts at every milestone.</p>
+    </div>
+    <div class="p-step reveal">
+      <div class="p-dot">04</div>
+      <div class="p-title">Final Files</div>
+      <p class="p-desc">Approved work is handed over in all required formats. Revisions included until you're fully satisfied.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-intro reveal">
+    <div>
+      <span class="s-label">Our work</span>
+      <h2 class="s-title">Portfolio</h2>
+    </div>
+    <div class="portfolio-tabs">
+      <button class="ptab active" onclick="filterPortfolio(this,'all')">All</button>
+      <button class="ptab" onclick="filterPortfolio(this,'2d')">2D Art</button>
+      <button class="ptab" onclick="filterPortfolio(this,'3d')">3D & Rigging</button>
+      <button class="ptab" onclick="filterPortfolio(this,'brand')">Branding</button>
+      <button class="ptab" onclick="filterPortfolio(this,'social')">Social & Web</button>
+    </div>
+  </div>
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="p-item reveal" data-cat="brand" style="background:linear-gradient(135deg,#0a0a0f,#1a1a2e)"><div class="p-placeholder"><div class="p-placeholder-icon">🎨</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">Logo + Banner<br><span style="color:#7DC4F5;font-size:0.7rem">MarcJohn01 · Twitch</span></div></div><div class="p-item-label"><div class="p-item-name">Logo & Stream Banner</div><div class="p-item-cat">Branding · Add image</div></div></div>
+    <div class="p-item reveal" data-cat="2d" style="background:linear-gradient(135deg,#0d1117,#1a0a2e)"><div class="p-placeholder"><div class="p-placeholder-icon">🐙</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">Logo + Overlay Kit<br><span style="color:#7DC4F5;font-size:0.7rem">SlayingSquid · Black & Blue</span></div></div><div class="p-item-label"><div class="p-item-name">Full Stream Package</div><div class="p-item-cat">2D Art · Add image</div></div></div>
+    <div class="p-item reveal" data-cat="brand" style="background:linear-gradient(135deg,#0f1a00,#1a2e00)"><div class="p-placeholder"><div class="p-placeholder-icon">⚡</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">Avatar Design<br><span style="color:#7DC4F5;font-size:0.7rem">XXXKnightRyderXX</span></div></div><div class="p-item-label"><div class="p-item-name">Custom Avatar</div><div class="p-item-cat">Character Art · Add image</div></div></div>
+    <div class="p-item reveal" data-cat="2d" style="background:linear-gradient(135deg,#1a0000,#2e0000)"><div class="p-placeholder"><div class="p-placeholder-icon">🔴</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">Starting Soon Screen<br><span style="color:#7DC4F5;font-size:0.7rem">Kagegami BigSix · Red Theme</span></div></div><div class="p-item-label"><div class="p-item-name">Stream Overlay Package</div><div class="p-item-cat">2D Art · Add image</div></div></div>
+    <div class="p-item reveal" data-cat="3d" style="background:linear-gradient(135deg,#00101a,#001a2e)"><div class="p-placeholder"><div class="p-placeholder-icon">🧊</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">VTuber Rig<br><span style="color:#7DC4F5;font-size:0.7rem">Full Body · Blue Coat</span></div></div><div class="p-item-label"><div class="p-item-name">3D VTuber Model Rigging</div><div class="p-item-cat">3D Rigging · Add image</div></div></div>
+    <div class="p-item reveal" data-cat="2d" style="background:linear-gradient(135deg,#1a001a,#2e002e)"><div class="p-placeholder"><div class="p-placeholder-icon">🐉</div><div class="p-placeholder-text" style="color:rgba(255,255,255,0.5)">Dragon Emote Pack<br><span style="color:#7DC4F5;font-size:0.7rem">8x Custom Emotes</span></div></div><div class="p-item-label"><div class="p-item-name">Custom Emote Set</div><div class="p-item-cat">2D Art · Add image</div></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <span class="s-label reveal">Client reviews</span>
+  <h2 class="s-title reveal">What clients<br><em>say about us</em></h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X</div>
+      <p class="testi-quote">"Just as a reminder for those interested in a new logo — be sure to check out @Floraharper112! They are the ones responsible for my logo and Twitch banner I use for my channel!"</p>
+      <div class="testi-author"><div class="testi-avatar">ET</div><div><div class="testi-name">EmotionalTKO</div><div class="testi-handle">@UEGemo · Twitch Streamer</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X</div>
+      <p class="testi-quote">"Big shoutout to @Floraharper112 for making my avatar. She does some amazing work in graphic design, so I can not recommend checking her out enough!"</p>
+      <div class="testi-author"><div class="testi-avatar">IJ</div><div><div class="testi-name">ImpulseJD</div><div class="testi-handle">@impulsejdtwitch · 679 impressions</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X</div>
+      <p class="testi-quote">"Big shoutout to @Floraharper112 and the team for working on my project — amazing work! If you need graphics, check them out."</p>
+      <div class="testi-author"><div class="testi-avatar">UK</div><div><div class="testi-name">Unkle Kage</div><div class="testi-handle">@Big6_ · 1K impressions</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X</div>
+      <p class="testi-quote">"Big shoutout to @Floraharper112 for the Logo and Banner. Looks amazing! Make sure you check her out."</p>
+      <div class="testi-author"><div class="testi-avatar">MJ</div><div><div class="testi-name">Marcus Johnson</div><div class="testi-handle">@Marcjohn01 · 1K impressions</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X</div>
+      <p class="testi-quote">"If you're a small streamer and could use help with your streaming profile — DM @Floraharper112. Amazing work on my full Twitch setup!"</p>
+      <div class="testi-author"><div class="testi-avatar">SG</div><div><div class="testi-name">SIVADIOUSGAMING</div><div class="testi-handle">@SIVADIOUSGAMING · Twitch</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-verified">✓ Verified on Twitter / X · French</div>
+      <p class="testi-quote">"N'hésitez pas à contacter @Floraharper112 pour vos bannières, images de profile, emotes et assets. Son travail est hyper quali!"</p>
+      <div class="testi-author"><div class="testi-avatar">PM</div><div><div class="testi-name">Pilou Mitrandyl</div><div class="testi-handle">@Drmurlocs · 720 impressions</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <span class="s-label reveal">From the studio</span>
+  <h2 class="s-title reveal">Resources &<br><em>insights</em></h2>
+  <div class="blog-grid">
+    <div class="blog-card reveal">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#EEF6FF,#B8DEFF)">🎮</div>
+      <div class="blog-body">
+        <span class="blog-cat">Streaming</span>
+        <div class="blog-title">5 Things Every Streamer Needs Before Going Live in 2026</div>
+        <p class="blog-preview">Most new streamers go live with zero visual identity and wonder why no one follows. Here are the 5 essentials that separate professional channels from the rest.</p>
+        <div class="blog-meta">Flora Harper Studio · 2026</div>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#EEF6FF,#7DC4F5)">🧊</div>
+      <div class="blog-body">
+        <span class="blog-cat">VTubing</span>
+        <div class="blog-title">2D vs 3D VTuber Models — Which One Is Right for You?</div>
+        <p class="blog-preview">2D is faster and cheaper. 3D is more expressive and premium. The right choice depends on your audience, budget, and long-term goals. Here's the full breakdown.</p>
+        <div class="blog-meta">Flora Harper Studio · 2026</div>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#EEF6FF,#2B8FE0)">🏷️</div>
+      <div class="blog-body">
+        <span class="blog-cat">Branding</span>
+        <div class="blog-title">Why Your Brand Looks Cheap — And How to Fix It Today</div>
+        <p class="blog-preview">Inconsistent colors. No logo system. Fonts that clash. These are the three things that make every brand look amateur — and they're all fixable in under a week.</p>
+        <div class="blog-meta">Flora Harper Studio · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <span class="s-label reveal">Common questions</span>
+  <h2 class="s-title reveal">Got questions?<br><em>We have answers.</em></h2>
+  <div class="faq-grid" id="faqGrid">
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">What services does Flora Harper offer? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>We cover 2D art, 3D modeling and rigging, comic and novel writing, brand identity, logo design, website design and maintenance, social media management, ecommerce store setup, and full digital marketing strategy.</p></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">How do I get started? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>Fill the contact form below or email us at floraharper600@gmail.com. You can also DM us on Instagram (@iamfloraharper) or Twitter/X (@Floraharper112). We reply within 24 hours.</p></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">How long does a project take? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>Simple projects like logos or banners typically take 24–48 hours. Complex projects like full 3D rigging, brand systems, or website builds are scoped individually. We always give you a clear timeline upfront.</p></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">What payment methods do you accept? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>We accept PayPal and Wise for international payments in USD and GBP. Payment is collected upfront before project commencement.</p></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">Do you offer revisions? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>Yes. Every package includes revision rounds. Premium packages include unlimited revisions until you are fully satisfied with the result.</p></div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">Can you handle large or ongoing projects? <div class="faq-arrow">+</div></div>
+      <div class="faq-a"><p>Absolutely. Our Full Studio package is designed exactly for this — a dedicated team managing your creative needs on an ongoing monthly basis. We function as your outsourced creative department.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title reveal">Let's build<br>something <em>great</em></h2>
+    <p class="contact-sub reveal">Tell us what you need. We'll get back to you within 24 hours.</p>
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text" class="form-input" placeholder="Your name" required>
+        <input type="email" class="form-input" placeholder="Your email" required>
+      </div>
+      <input type="text" class="form-input" placeholder="Project type (e.g. 3D Character, Logo, Social Media)">
+      <textarea class="form-input form-textarea" placeholder="Tell us about your project..." required></textarea>
+      <button type="submit" class="btn-p" style="border:none;width:100%;font-family:'DM Sans',sans-serif;font-size:0.88rem">Send Message</button>
+    </form>
+    <div class="form-success" id="formSuccess">Message sent! We'll be in touch within 24 hours.</div>
+    <div class="contact-socials reveal">
+      <a href="https://www.instagram.com/iamfloraharper/" target="_blank" class="social-btn">📷 Instagram</a>
+      <a href="https://x.com/Floraharper112" target="_blank" class="social-btn">𝕏 Twitter / X</a>
+      <a href="mailto:floraharper600@gmail.com" class="social-btn">✉ Email Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-logo">Flora <em>Harper</em></div>
+    <div class="footer-company">SHAHZAIBAWANLTD · Registered in England & Wales</div>
+  </div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#packages">Packages</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+    <a href="mailto:floraharper600@gmail.com">floraharper600@gmail.com</a>
+  </div>
+  <div class="footer-copy">© 2026 Flora Harper · All rights reserved</div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px'});
+setInterval(()=>{rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx-18+'px';ring.style.top=ry-18+'px'},16);
+document.querySelectorAll('a,button,.svc-card,.pkg-card,.faq-item,.p-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.transform='scale(1.5)';ring.style.opacity='0.25'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)';ring.style.opacity='0.5'});
+});
+
+// Scroll reveal
+const revEls=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*70);ro.unobserve(e.target)}});
+},{threshold:0.1});
+revEls.forEach(el=>ro.observe(el));
+
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// About modal
+function openModal(e){e.preventDefault();document.getElementById('aboutModal').classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(){document.getElementById('aboutModal').classList.remove('open');document.body.style.overflow=''}
+document.getElementById('aboutModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+// FAQ toggle
+function toggleFaq(el){
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!isOpen)el.classList.add('open');
+}
+
+// Portfolio filter
+function filterPortfolio(btn,cat){
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.p-item').forEach(item=>{
+    const show=cat==='all'||item.dataset.cat===cat;
+    item.style.display=show?'flex':'none';
+  });
+}
+
+// Contact form
+function handleSubmit(e){
+  e.preventDefault();
+  const form=e.target;
+  const success=document.getElementById('formSuccess');
+  form.style.display='none';
+  success.style.display='block';
+}
+
+function scrollToContact(){
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
